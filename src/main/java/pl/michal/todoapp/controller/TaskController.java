@@ -5,13 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.michal.todoapp.model.Task;
 import pl.michal.todoapp.model.TaskRepository;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -34,6 +32,12 @@ class TaskController {
     ResponseEntity<List<Task>> readAllTasks(Pageable page){
         logger.warn("Custom pageable");
         return ResponseEntity.ok(repository.findAll(page).getContent());
+    }
+
+    @PutMapping("/tasks/{id}")
+    ResponseEntity<?> updateTask(@RequestBody @Valid Task toUpdate){
+        repository.save(toUpdate);
+        return ResponseEntity.noContent().build();
     }
 
 }
