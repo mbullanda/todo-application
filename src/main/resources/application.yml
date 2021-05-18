@@ -5,4 +5,4 @@ spring:
       path: '/console'
   datasource:
     url: 'jdbc:h2:mem:testdb'
-my.prop: 'test'
+task.allowMultipleTasksFromTemplate: false
