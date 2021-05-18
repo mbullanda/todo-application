@@ -7,4 +7,4 @@ spring:
     url: 'jdbc:h2:mem:testdb'
   main:
     banner-mode: off
-task.allowMultipleTasksFromTemplate: false
+task.template.allowMultipleTask: false
