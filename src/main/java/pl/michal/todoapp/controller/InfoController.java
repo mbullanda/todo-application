@@ -5,14 +5,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.michal.todoapp.TaskConfigurationProperties;
 
 @RestController
 class InfoController {
 
-    @Autowired
     private DataSourceProperties dataSource;
-    @Value("${task.allowMultipleTasksFromTemplate}")
-    private String myProp;
+    private TaskConfigurationProperties myProp;
+
+    public InfoController(DataSourceProperties dataSource, TaskConfigurationProperties myProp) {
+        this.dataSource = dataSource;
+        this.myProp = myProp;
+    }
 
     @GetMapping("/info/url")
     String url(){
@@ -20,7 +24,7 @@ class InfoController {
     }
 
     @GetMapping("/info/prop")
-    String myProp(){
-        return myProp;
+    boolean myProp(){
+        return myProp.isAllowMultipleTasksFromTemplate();
     }
 }
