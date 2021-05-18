@@ -10,6 +10,7 @@ import pl.michal.todoapp.model.Task;
 import pl.michal.todoapp.model.TaskRepository;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 
@@ -34,8 +35,23 @@ class TaskController {
         return ResponseEntity.ok(repository.findAll(page).getContent());
     }
 
+    @GetMapping("/tasks/{id}")
+    ResponseEntity<Task> readTask(@PathVariable int id){
+        if (!repository.existsById(id)){
+            return ResponseEntity.notFound().build();
+        }
+        logger.warn("Exposing task by id: " + id);
+        return ResponseEntity.ok(repository.findById(id).get());
+    }
+
+    @PostMapping("/tasks/create")
+    ResponseEntity<?> createTask(@RequestBody @Valid Task toCreate){
+        repository.save(toCreate);
+        return ResponseEntity.created(URI.create("")).build();
+    }
+
     @PutMapping("/tasks/{id}")
-    ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody Task toUpdate){
+    ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate){
         if (!repository.existsById(id)){
             return ResponseEntity.notFound().build();
         }
