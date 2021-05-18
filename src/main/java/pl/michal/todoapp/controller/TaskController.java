@@ -44,10 +44,10 @@ class TaskController {
         return ResponseEntity.ok(repository.findById(id).get());
     }
 
-    @PostMapping("/tasks/create")
-    ResponseEntity<?> createTask(@RequestBody @Valid Task toCreate){
-        repository.save(toCreate);
-        return ResponseEntity.created(URI.create("")).build();
+    @PostMapping("/tasks")
+    ResponseEntity<Task> createTask(@RequestBody @Valid Task toCreate){
+        Task result = repository.save(toCreate);
+        return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
     @PutMapping("/tasks/{id}")
