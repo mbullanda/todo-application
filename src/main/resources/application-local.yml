@@ -5,6 +5,3 @@ spring:
       path: '/console'
   datasource:
     url: 'jdbc:h2:mem:testdb'
-  main:
-    banner-mode: off
-task.template.allowMultipleTask: false
