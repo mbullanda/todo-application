@@ -4,4 +4,7 @@ spring:
       enabled: true
       path: '/console'
   datasource:
-    url: 'jdbc:h2:mem:testdb'
+    url: 'jdbc:h2:file:\C:\Users\USER\Documents\IntelliJProjects\todo-app\todo-db'
+  jpa:
+    hibernate:
+      ddl-auto: update
