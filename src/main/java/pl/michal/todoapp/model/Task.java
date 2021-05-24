@@ -65,7 +65,7 @@ public class Task {
     }
 
     @PreUpdate
-    void preUpdate(){
+    void preMerge(){
         updatedOn = LocalDateTime.now();
     }
 
