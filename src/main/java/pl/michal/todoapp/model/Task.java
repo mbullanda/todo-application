@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Table(name = "tasks")
 public class Task{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @NotBlank(message = "Task's description must not be empty")
     private String description;
@@ -21,6 +21,7 @@ public class Task{
     @ManyToOne
     @JoinColumn(name = "task_group_id")
     private TaskGroup group;
+
 
 
     public Task() {
