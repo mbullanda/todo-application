@@ -1,12 +1,14 @@
-package pl.michal.todoapp.model;
+package pl.michal.todoapp.adapter;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import pl.michal.todoapp.model.Task;
+import pl.michal.todoapp.model.TaskRepository;
 
 @Repository
-interface SqlTaskRepository extends  TaskRepository, JpaRepository<Task,Integer> {
+interface SqlTaskRepository extends TaskRepository, JpaRepository<Task,Integer> {
     //dzięki jpaRepository mamy dostęp do wielu użytecznych metod jak delete, save, find, count
 
     @Override
