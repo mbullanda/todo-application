@@ -1,6 +1,9 @@
 package pl.michal.todoapp.logic;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.RequestScope;
 import pl.michal.todoapp.TaskConfigurationProperties;
 import pl.michal.todoapp.model.TaskGroup;
 import pl.michal.todoapp.model.TaskGroupRepository;
@@ -13,6 +16,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
+@RequestScope
 public class TaskGroupService {
 
     private TaskGroupRepository repository;
@@ -23,7 +27,7 @@ public class TaskGroupService {
         this.taskRepository = taskRepository;
     }
 
-    public GroupReadModel createGroup(GroupWriteModel source){
+    public GroupReadModel createGroup(final GroupWriteModel source){
         TaskGroup result = repository.save(source.toGroup());
         return new GroupReadModel(result);
     }
