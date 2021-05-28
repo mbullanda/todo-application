@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-@Service
-@RequestScope
 public class TaskGroupService {
 
     private TaskGroupRepository repository;
