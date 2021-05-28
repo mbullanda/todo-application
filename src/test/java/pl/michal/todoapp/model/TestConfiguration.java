@@ -5,12 +5,25 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import javax.sql.DataSource;
 import java.util.*;
 
 @Configuration
 public class TestConfiguration {
+
     @Bean
+    @Primary
+    @Profile("!integration")
+    DataSource e2eTestDataSource() {
+        var result = new DriverManagerDataSource("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1","", "");
+        result.setDriverClassName("org.h2.Driver");
+        return result;
+    }
+
+    @Bean
+    @Primary
     @Profile("integration")
     TaskRepository testRepo(){
         return new TaskRepository() {
