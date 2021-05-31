@@ -1,6 +1,5 @@
 package pl.michal.todoapp.logic;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pl.michal.todoapp.TaskConfigurationProperties;
@@ -14,7 +13,6 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -31,8 +29,10 @@ class ProjectServiceTest {
         //and
         TaskConfigurationProperties mockConfig = configurationReturning(false);
 
+        TaskGroupService mockService = mock(TaskGroupService.class);
+
         //system under test
-        var toTest = new ProjectService(null, mockGroupRepository, mockConfig);
+        var toTest = new ProjectService(null, mockGroupRepository, mockConfig, mockService);
 
         //when
         var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
@@ -49,12 +49,13 @@ class ProjectServiceTest {
         //given
         var mockRepository = mock(ProjectRepository.class);
         when(mockRepository.findById(anyInt())).thenReturn(Optional.empty());
+        TaskGroupService mockService = mock(TaskGroupService.class);
 
         //and
         TaskConfigurationProperties mockConfig = configurationReturning(true);
 
         //system under test
-        var toTest = new ProjectService(mockRepository, null, mockConfig);
+        var toTest = new ProjectService(mockRepository, null, mockConfig, mockService);
 
         //when
         var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
@@ -76,8 +77,10 @@ class ProjectServiceTest {
         //and
         TaskConfigurationProperties mockConfig = configurationReturning(true);
 
+        TaskGroupService mockService = mock(TaskGroupService.class);
+
         //system under test
-        var toTest = new ProjectService(mockRepository, mockGroupRepository, mockConfig);
+        var toTest = new ProjectService(mockRepository, mockGroupRepository, mockConfig, mockService);
 
         //when
         var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
@@ -93,6 +96,8 @@ class ProjectServiceTest {
     void createGroup_configurationOk_existingProject_createsAndSavesGroup(){
         //given
         var today = LocalDate.now().atStartOfDay();
+
+        TaskGroupService mockService = mock(TaskGroupService.class);
         //and
         var project = projectWith("bar", Set.of(-1, -2));
         var mockRepository = mock(ProjectRepository.class);
@@ -103,7 +108,7 @@ class ProjectServiceTest {
         //and
         TaskConfigurationProperties mockConfig = configurationReturning(true);
         //system under test
-        var toTest = new ProjectService(mockRepository, inMemoryGroupRepository, mockConfig);
+        var toTest = new ProjectService(mockRepository, inMemoryGroupRepository, mockConfig, mockService);
         //when
         GroupReadModel result = toTest.createGroup(today, 1);
         //then

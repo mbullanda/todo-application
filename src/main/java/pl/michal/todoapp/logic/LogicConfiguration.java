@@ -10,8 +10,8 @@ import pl.michal.todoapp.model.TaskRepository;
 @Configuration
 public class LogicConfiguration {
     @Bean
-    ProjectService projectService(final ProjectRepository repository, final TaskGroupRepository taskGroupRepository, final TaskConfigurationProperties config){
-        return new ProjectService(repository, taskGroupRepository, config);
+    ProjectService projectService(final ProjectRepository repository, final TaskGroupRepository taskGroupRepository, final TaskConfigurationProperties config, final TaskGroupService service){
+        return new ProjectService(repository, taskGroupRepository, config, service);
     }
     @Bean
     TaskGroupService taskGroupService(final TaskGroupRepository taskGroupRepository, final TaskRepository taskRepository){
