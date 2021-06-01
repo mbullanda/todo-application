@@ -96,19 +96,18 @@ class ProjectServiceTest {
     void createGroup_configurationOk_existingProject_createsAndSavesGroup(){
         //given
         var today = LocalDate.now().atStartOfDay();
-
-        TaskGroupService mockService = mock(TaskGroupService.class);
         //and
         var project = projectWith("bar", Set.of(-1, -2));
         var mockRepository = mock(ProjectRepository.class);
         when(mockRepository.findById(anyInt())).thenReturn(Optional.of(project));
         //and
         InMemoryGroupRepository inMemoryGroupRepository = inMemoryGroupRepository();
+        var serviceWithInMemRepo = dummyGroupService(inMemoryGroupRepository);
         int countBeforeCall = inMemoryGroupRepository.count();
         //and
         TaskConfigurationProperties mockConfig = configurationReturning(true);
         //system under test
-        var toTest = new ProjectService(mockRepository, inMemoryGroupRepository, mockConfig, mockService);
+        var toTest = new ProjectService(mockRepository, inMemoryGroupRepository, mockConfig, serviceWithInMemRepo);
         //when
         GroupReadModel result = toTest.createGroup(today, 1);
         //then
@@ -116,6 +115,10 @@ class ProjectServiceTest {
         assertThat(result.getDeadline()).isEqualTo(today.minusDays(1));
         assertThat(result.getTasks()).allMatch(task -> task.getDescription().equals("foo"));
         assertThat(countBeforeCall + 1).isEqualTo(inMemoryGroupRepository.count());
+    }
+
+    private TaskGroupService dummyGroupService(final InMemoryGroupRepository inMemoryGroupRepository){
+        return new TaskGroupService(inMemoryGroupRepository, null);
     }
 
     private Project projectWith(String projectDescription, Set<Integer> daysToDeadline){
