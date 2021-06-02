@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import pl.michal.todoapp.model.Task;
 import pl.michal.todoapp.model.TaskRepository;
 
+import java.util.List;
+
 @Repository
 interface SqlTaskRepository extends TaskRepository, JpaRepository<Task,Integer> {
     //dzięki jpaRepository mamy dostęp do wielu użytecznych metod jak delete, save, find, count
@@ -17,4 +19,7 @@ interface SqlTaskRepository extends TaskRepository, JpaRepository<Task,Integer> 
 
     @Override
     boolean existsByDoneIsFalseAndGroup_Id(Integer groupId);
+
+    @Override
+    List<Task> findAllByGroup_Id(Integer groupId);
 }
