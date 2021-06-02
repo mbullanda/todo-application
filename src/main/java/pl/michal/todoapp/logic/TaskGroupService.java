@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.annotation.RequestScope;
 import pl.michal.todoapp.TaskConfigurationProperties;
+import pl.michal.todoapp.model.Project;
 import pl.michal.todoapp.model.TaskGroup;
 import pl.michal.todoapp.model.TaskGroupRepository;
 import pl.michal.todoapp.model.TaskRepository;
@@ -26,7 +27,11 @@ public class TaskGroupService {
     }
 
     public GroupReadModel createGroup(final GroupWriteModel source){
-        TaskGroup result = repository.save(source.toGroup());
+        return createGroup(source,null);
+    }
+
+    GroupReadModel createGroup(final GroupWriteModel source, final Project project) {
+        TaskGroup result = repository.save(source.toGroup(project));
         return new GroupReadModel(result);
     }
 
