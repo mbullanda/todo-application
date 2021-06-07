@@ -1,18 +1,17 @@
 package pl.michal.todoapp.controller;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.michal.todoapp.logic.ProjectService;
 import pl.michal.todoapp.model.Project;
 import pl.michal.todoapp.model.ProjectStep;
 import pl.michal.todoapp.model.projection.ProjectWriteModel;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -45,6 +44,18 @@ public class ProjectController {
     @PostMapping(params = "addStep")
     String addProjectStep(@ModelAttribute("project") ProjectWriteModel current){
         current.getSteps().add(new ProjectStep());
+        return "projects";
+    }
+
+    @PostMapping("/{id}")
+    String createGroup(@ModelAttribute("project") ProjectWriteModel current, Model model,
+                       @PathVariable int id, @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime deadline){
+        try {
+            service.createGroup(deadline, id);
+            model.addAttribute("message", "Dodano grupę");
+        } catch (IllegalStateException | IllegalArgumentException e){
+            model.addAttribute("message", "Błąd podczas tworzenia grupy");
+        }
         return "projects";
     }
 
