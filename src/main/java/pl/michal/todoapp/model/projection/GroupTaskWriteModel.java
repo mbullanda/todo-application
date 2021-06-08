@@ -3,10 +3,11 @@ package pl.michal.todoapp.model.projection;
 import pl.michal.todoapp.model.Task;
 import pl.michal.todoapp.model.TaskGroup;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 public class GroupTaskWriteModel {
-
+    @NotBlank(message = "Task's description must not be empty")
     private String description;
     private LocalDateTime deadline;
 
