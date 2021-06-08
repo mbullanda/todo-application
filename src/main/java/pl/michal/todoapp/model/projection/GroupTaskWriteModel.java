@@ -1,5 +1,6 @@
 package pl.michal.todoapp.model.projection;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import pl.michal.todoapp.model.Task;
 import pl.michal.todoapp.model.TaskGroup;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 public class GroupTaskWriteModel {
     @NotBlank(message = "Task's description must not be empty")
     private String description;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime deadline;
 
     public String getDescription() {
