@@ -8,14 +8,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.michal.todoapp.logic.TaskGroupService;
 import pl.michal.todoapp.logic.TaskService;
+import pl.michal.todoapp.model.ProjectStep;
 import pl.michal.todoapp.model.Task;
 import pl.michal.todoapp.model.TaskGroup;
 import pl.michal.todoapp.model.TaskRepository;
 import pl.michal.todoapp.model.projection.GroupReadModel;
+import pl.michal.todoapp.model.projection.GroupTaskWriteModel;
 import pl.michal.todoapp.model.projection.GroupWriteModel;
+import pl.michal.todoapp.model.projection.ProjectWriteModel;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -68,6 +72,25 @@ class TaskGroupController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping(produces = MediaType.TEXT_HTML_VALUE, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    String addGroup(@ModelAttribute("group") @Valid GroupWriteModel current, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()){
+            return "groups";
+        }
+        taskGroupService.createGroup(current);
+        model.addAttribute("group", new GroupWriteModel());
+        model.addAttribute("groups", getGroups());
+        model.addAttribute("message", "Dodano grupę!");
+        return "groups";
+    }
+
+    @PostMapping(params = "addTask", produces = MediaType.TEXT_HTML_VALUE)
+    String addGroupTask(@ModelAttribute("group") GroupWriteModel current){
+        current.getTasks().add(new GroupTaskWriteModel());
+        return "groups";
+    }
+
+
     @ExceptionHandler(IllegalArgumentException.class)
     ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e){
         return ResponseEntity.notFound().build();
@@ -76,6 +99,11 @@ class TaskGroupController {
     @ExceptionHandler(IllegalStateException.class)
     ResponseEntity<String> handleIllegalState(IllegalStateException e){
         return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    @ModelAttribute("groups")
+    private List<GroupReadModel> getGroups() {
+        return taskGroupService.readAll();
     }
 
 }
