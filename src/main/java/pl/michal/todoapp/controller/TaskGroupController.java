@@ -102,7 +102,7 @@ class TaskGroupController {
     }
 
     @ModelAttribute("groups")
-    private List<GroupReadModel> getGroups() {
+    List<GroupReadModel> getGroups() {
         return taskGroupService.readAll();
     }
 
