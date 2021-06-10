@@ -28,6 +28,7 @@ import java.util.concurrent.CompletableFuture;
 
 
 @Controller
+@IllegalExceptionsProcessing
 @RequestMapping("/groups")
 class TaskGroupController {
     private static final Logger logger = LoggerFactory.getLogger(TaskGroupController.class);
