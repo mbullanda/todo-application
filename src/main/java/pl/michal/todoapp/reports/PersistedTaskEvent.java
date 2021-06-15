@@ -8,7 +8,7 @@ import java.time.ZoneId;
 
 @Entity
 @Table(name = "task_events")
-public class PersistedTaskEvent {
+class PersistedTaskEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
